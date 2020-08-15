@@ -21,7 +21,7 @@ function displayCityBtn() {
         var weatherIcon = $("<img>");
         weatherIcon.attr("src", iconURL);
         weatherIcon.attr("alt", "weather icon");
-        $("#city").html("<h1>" + response.name + ' : ' + todaysDate + "</h1>");
+        $("#city").html("<h1>" + response.name + ' : ' + todaysDate + "</h1>").attr("style", "color:white");
         $("#city").append(weatherIcon)
         var tempF = (response.main.temp - 273.15) * 1.80 + 32;
         $("#temp").text(tempF.toFixed(1) + " F");
