@@ -41,6 +41,7 @@ function displayForecast(city) {
         method: "GET"
     }).then(function (response) {
         console.log(response);
+        $("#forecast").empty();
        
         for (let i = 0; i < response.list.length; i++) {
             var curr = response.list[i];
