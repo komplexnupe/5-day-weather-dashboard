@@ -6,7 +6,7 @@ let currentDay = $("#jumboCD");
 let todaysDate = moment().format("dddd, MMMM Do YYYY");
 let forecast5 = "";
 let cities = ["Charlotte"];
-
+let day = 0
 
 function keepFive(){
     if(cities.length === 5){
@@ -53,8 +53,6 @@ function displayForecast(city) {
         for (let i = 0; i < fiveDayResponse.list.length; i++) {
            let curr = fiveDayResponse.list[i];
             if (curr.dt_txt.includes("12:00")) {
-            //    let newDiv = $("<div>").appendTo("#forecast");
-                // newDiv.addClass("fiveDay col-2 float-left ml-4 bg-light rounded p-3");
                 console.log(i);
                 console.log(fiveDayResponse.city.name);
                let iconURL = `http://openweathermap.org/img/wn/${fiveDayResponse.list[i].weather[0].icon}@2x.png`
@@ -64,10 +62,12 @@ function displayForecast(city) {
                let windSpeed = fiveDayResponse.list[i].wind.speed
                let humidity = fiveDayResponse.list[i].main.humidity
                let city = fiveDayResponse.city.name
-                $(".fiveDay").append(`<div class= "col-2 float-left ml-4 bg-light rounded p-3"> <h3> ${city} </h3> <br> <img src="${iconURL}"> <br> Temp: ${tempF}°F <br> Wind Speed: ${windSpeed} <br>Humidity: ${humidity}% </div>`);
+               let date = moment().add([day], 'day').format('MMMM Do YYYY')
+                $(".fiveDay").append(`<div class= "col-2 float-left ml-4 bg-light rounded p-3"> <h3> ${city} </h3> <br> ${date} <br> <img src="${iconURL}"> <br> Temp: ${tempF}°F <br> Wind Speed: ${windSpeed} <br>Humidity: ${humidity}% </div>`);
                 console.log(tempF);
                 console.log(windSpeed);
                 console.log(humidity);
+                day++
             }
         }
     });
