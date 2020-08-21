@@ -2,6 +2,7 @@
 
 ## User Story
 
+![](assets/images/weather.png)
 ```
 AS A traveler
 I WANT to see the weather outlook for multiple cities
