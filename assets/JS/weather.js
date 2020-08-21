@@ -63,7 +63,7 @@ function displayForecast(city) {
                let humidity = fiveDayResponse.list[i].main.humidity
             //    let city = fiveDayResponse.city.name
                let date = moment().add([day], 'day').format('MMMM Do')
-                $(".fiveDay").append(`<div class= "col-2 float-left ml-4 bg-light rounded p-3"> <h4> ${date} </h4> <br> <img src="${iconURL}"> <br> Temp: ${tempF}°F <br> Wind Speed: ${windSpeed} <br>Humidity: ${humidity}% </div>`);
+                $(".fiveDay").append(`<div class= "col-2 float-left ml-4 bg-warning rounded p-3"> <h4> ${date} </h4> <br> <img src="${iconURL}"> <br> Temp: ${tempF}°F <br> Wind Speed: ${windSpeed} <br>Humidity: ${humidity}% </div>`);
                 console.log(tempF);
                 console.log(windSpeed);
                 console.log(humidity);
