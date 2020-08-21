@@ -11,6 +11,6 @@ When a user searches for a city, the forecast for the current day pops up with t
 
 Web App: https://komplexnupe.github.io/5-day-weather-dashboard/
 
-![Weather Dashboard](assets/images/weather.png)
+![](assets/images/weather.png)
 
 
