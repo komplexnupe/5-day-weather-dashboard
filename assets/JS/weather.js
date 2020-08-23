@@ -85,6 +85,11 @@ function renderDivs() {
 $(searchBtn).on("click", function (event) {
     event.preventDefault();
    let city = $("#city-input").val().trim();
+   console.log(city);
+   if(city === ""){
+    //    $("cities-form").append()
+       return;
+   } else {
     cities.push(city);
     renderDivs();
    let queryURL = dayStarterURL + city + apiKey;
@@ -101,14 +106,14 @@ $(searchBtn).on("click", function (event) {
         $("#city").html("<h1>" + searchResponse.name + ' : ' + todaysDate + "</h1>");
         $("#city").append(weatherIcon)
        let tempF = (searchResponse.main.temp - 273.15) * 1.80 + 32;
-        $("#temp").text(tempF.toFixed(1) + " F");
+        $("#temp").text(tempF.toFixed(1) + " °F");
         $("#wind").text("Wind Speed: " + searchResponse.wind.speed + " MPH");
         $("#humidity").text("Humidity: " + searchResponse.main.humidity + "%");
        
-    });
+     });
     displayForecast(city);
     keepFive();
-});
+}});
 
 // Search by Saved History Button
 $(document).on("click", ".city", displayCityBtn);
@@ -137,10 +142,10 @@ let queryURL = dayStarterURL + lastSearched + apiKey;
         weatherIcon.attr("alt", "weather icon");
         $("#city").html(`<h1>${lastSearched} : ${todaysDate}</h1>`);
         $("#city").append(weatherIcon)
-       let tempF = (searchResponse.main.temp - 273.15) * 1.80 + 32;
-        $("#temp").text(tempF.toFixed(1) + " F");
-        $("#wind").text("Wind Speed: " + searchResponse.wind.speed + " MPH");
-        $("#humidity").text("Humidity: " + searchResponse.main.humidity + "%");
+       let tempF = (loadResponse.main.temp - 273.15) * 1.80 + 32;
+        $("#temp").text(`${tempF.toFixed(1)} °F`);
+        $("#wind").text(`Wind Speed: ${loadResponse.wind.speed} MPH`);
+        $("#humidity").text(`Humidity: ${loadResponse.main.humidity}%`);
        
     });
     displayForecast(lastSearched);
