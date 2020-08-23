@@ -56,17 +56,12 @@ function displayForecast(city) {
                 console.log(i);
                 console.log(fiveDayResponse.city.name);
                let iconURL = `http://openweathermap.org/img/wn/${fiveDayResponse.list[i].weather[0].icon}@2x.png`
-                console.log(iconURL);
                let temp = (fiveDayResponse.list[i].main.temp - 273.15) * 1.80 + 32;
                let tempF = temp.toFixed(1)
                let windSpeed = fiveDayResponse.list[i].wind.speed
                let humidity = fiveDayResponse.list[i].main.humidity
-            //    let city = fiveDayResponse.city.name
                let date = moment().add([day], 'day').format('MMMM Do')
                 $(".fiveDay").append(`<div class= "col-2 float-left ml-4 bg-warning rounded p-3"> <h4> ${date} </h4> <br> <img src="${iconURL}"> <br> Temp: ${tempF}°F <br> Wind Speed: ${windSpeed} <br>Humidity: ${humidity}% </div>`);
-                console.log(tempF);
-                console.log(windSpeed);
-                console.log(humidity);
                 day++
             }
         }
@@ -90,7 +85,6 @@ function renderDivs() {
 $(searchBtn).on("click", function (event) {
     event.preventDefault();
    let city = $("#city-input").val().trim();
-    console.log(city);
     cities.push(city);
     renderDivs();
    let queryURL = dayStarterURL + city + apiKey;
@@ -98,7 +92,7 @@ $(searchBtn).on("click", function (event) {
         url: queryURL,
         method: "GET"
     }).then(function (search) {
-        console.log(search.name);
+        // console.log(search.name);
        let iconURL = "http://openweathermap.org/img/wn/" + search.weather[0].icon + "@2x.png"
        let weatherIcon = $("<img>");
         weatherIcon.attr("src", iconURL);
@@ -122,7 +116,8 @@ $(document).on("click", ".city", displayCityBtn);
 $(document).on('keypress',function(e) {
     if(e.which == 13) {
         // alert("You pressed Enter");
-       $(searchBtn).click()
+        e.preventDefault();
+       $(searchBtn).click();
     }
 });
 
