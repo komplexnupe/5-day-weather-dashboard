@@ -1,6 +1,7 @@
 let apiKey = "&appid=0112a2612ac390c4e897ee81abe957d7"
 let dayStarterURL = "https://api.openweathermap.org/data/2.5/weather?q="
 let forecastURL = "https://api.openweathermap.org/data/2.5/forecast?q="
+let uvIndexURL = "https://api.openweathermap.org/data/2.5/uvi?"
 let searchBtn = $(".search_icon");
 let currentDay = $("#jumboCD");
 let todaysDate = moment().format("dddd, MMMM Do YYYY");
@@ -47,14 +48,13 @@ function displayForecast(city) {
         url: queryURL,
         method: "GET"
     }).then(function (fiveDayResponse) {
-        console.log(fiveDayResponse);
         $("#forecast").empty();
        
         for (let i = 0; i < fiveDayResponse.list.length; i++) {
            let curr = fiveDayResponse.list[i];
             if (curr.dt_txt.includes("12:00")) {
-                console.log(i);
-                console.log(fiveDayResponse.city.name);
+                // console.log(i);
+                // console.log(fiveDayResponse.city.name);
                let iconURL = `http://openweathermap.org/img/wn/${fiveDayResponse.list[i].weather[0].icon}@2x.png`
                let temp = (fiveDayResponse.list[i].main.temp - 273.15) * 1.80 + 32;
                let tempF = temp.toFixed(1)
@@ -85,7 +85,6 @@ function renderDivs() {
 $(searchBtn).on("click", function (event) {
     event.preventDefault();
    let city = $("#city-input").val().trim();
-   console.log(city);
    if(city === ""){
        $("#cities-form").append(`<div class= "text-danger bg-light"><p>Please Enter City Name</p></div>`)
        return;
@@ -99,7 +98,8 @@ $(searchBtn).on("click", function (event) {
         method: "GET"
     }).then(function (searchResponse) {
         localStorage.setItem("SearchCity", searchResponse.name)
-        // console.log(searchResponse);
+        localStorage.setItem("lat", searchResponse.coord.lat);
+        localStorage.setItem("lon", searchResponse.coord.lon);
        let iconURL = "http://openweathermap.org/img/wn/" + searchResponse.weather[0].icon + "@2x.png"
        let weatherIcon = $("<img>");
         weatherIcon.attr("src", iconURL);
@@ -111,6 +111,7 @@ $(searchBtn).on("click", function (event) {
         $("#wind").text("Wind Speed: " + searchResponse.wind.speed + " MPH");
         $("#humidity").text("Humidity: " + searchResponse.main.humidity + "%");
        
+        uv();
      });
     displayForecast(city);
     keepFive();
@@ -129,9 +130,9 @@ $(document).on('keypress',function(e) {
 });
 
 $(document).ready(function() {
-    console.log("ready!" );
-var lastSearched = localStorage.getItem("SearchCity");
-console.log(lastSearched);
+    // console.log("ready!" );
+let lastSearched = localStorage.getItem("SearchCity");
+// console.log(lastSearched);
 let queryURL = dayStarterURL + lastSearched + apiKey;
     $.ajax({
         url: queryURL,
@@ -150,7 +151,33 @@ let queryURL = dayStarterURL + lastSearched + apiKey;
        
     });
     displayForecast(lastSearched);
-
+    uv();
 });
+
+function uv(){
+    let lat = localStorage.getItem("lat");
+    let lon = localStorage.getItem('lon');
+    let queryURL = `${uvIndexURL}${apiKey}&lat=${lat}&lon=${lon}`;
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (uvResponse) {
+        let uvIndex = uvResponse.value;
+      console.log(uvIndex);
+      if(uvResponse.value < 3){
+          $("#uv").addClass("uvGreen")
+      } else if(uvResponse.value >= 3 && uvResponse.value < 6){
+        $("#uv").addClass("uvYellow")
+      }else if(uvResponse.value >= 6 && uvResponse.value < 8){
+        $("#uv").addClass("uvOrange")
+      }else if(uvResponse.value >= 8 && uvResponse.value < 11){
+        $("#uv").addClass("uvRed")
+      }else if(uvResponse.value >= 11){
+        $("#uv").addClass("uvPurple")
+      };
+      $("#uv").text(`UV Index: ${uvIndex}`)
+    });
+
+}
 
 renderDivs();
