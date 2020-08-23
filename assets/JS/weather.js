@@ -89,7 +89,6 @@ function renderDivs() {
 // Search Button function
 $(searchBtn).on("click", function (event) {
     event.preventDefault();
-    console.log("hey");
    let city = $("#city-input").val().trim();
     console.log(city);
     cities.push(city);
@@ -116,6 +115,15 @@ $(searchBtn).on("click", function (event) {
     keepFive();
 });
 
+// Search by Saved History Button
 $(document).on("click", ".city", displayCityBtn);
+
+// Search on Enter Keypress
+$(document).on('keypress',function(e) {
+    if(e.which == 13) {
+        // alert("You pressed Enter");
+       $(searchBtn).click()
+    }
+});
 
 renderDivs();
