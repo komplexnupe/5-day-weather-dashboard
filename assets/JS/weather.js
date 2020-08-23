@@ -87,9 +87,10 @@ $(searchBtn).on("click", function (event) {
    let city = $("#city-input").val().trim();
    console.log(city);
    if(city === ""){
-    //    $("cities-form").append()
+       $("#cities-form").append(`<div class= "text-danger bg-light"><p>Please Enter City Name</p></div>`)
        return;
    } else {
+       $(".text-danger").addClass("d-none");
     cities.push(city);
     renderDivs();
    let queryURL = dayStarterURL + city + apiKey;
