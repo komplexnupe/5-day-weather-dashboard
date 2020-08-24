@@ -8,6 +8,7 @@ let todaysDate = moment().format("dddd, MMMM Do YYYY");
 let forecast5 = "";
 let cities = [];
 let day = 0
+ 
 
 function keepFive() {
     if (cities.length === 5) {
@@ -15,7 +16,7 @@ function keepFive() {
     }
 }
 
-// Display Current Day on Jumbotron
+// Display Previously Searched Day on Jumbotron
 function displayCityBtn() {
     let city = $(this).attr("data-city");
     let queryURL = dayStarterURL + city + apiKey;
@@ -24,7 +25,6 @@ function displayCityBtn() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        console.log(response.weather[0].icon);
         let iconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png"
         let weatherIcon = $("<img>");
         weatherIcon.attr("src", iconURL);
@@ -32,7 +32,7 @@ function displayCityBtn() {
         $("#city").html("<h1>" + response.name + ' : ' + todaysDate + "</h1>").attr("style", "color:white");
         $("#city").append(weatherIcon)
         let tempF = (response.main.temp - 273.15) * 1.80 + 32;
-        $("#temp").text(tempF.toFixed(1) + " F");
+        $("#temp").text(tempF.toFixed(1) + "°F");
         $("#wind").text("Wind Speed: " + response.wind.speed + " MPH");
         $("#humidity").text("Humidity: " + response.main.humidity + "%");
 
@@ -107,7 +107,7 @@ $(searchBtn).on("click", function (event) {
             $("#city").html("<h1>" + searchResponse.name + ' : ' + todaysDate + "</h1>");
             $("#city").append(weatherIcon)
             let tempF = (searchResponse.main.temp - 273.15) * 1.80 + 32;
-            $("#temp").text(tempF.toFixed(1) + " °F");
+            $("#temp").text(tempF.toFixed(1) + "°F");
             $("#wind").text("Wind Speed: " + searchResponse.wind.speed + " MPH");
             $("#humidity").text("Humidity: " + searchResponse.main.humidity + "%");
 
@@ -143,7 +143,7 @@ $(document).ready(function () {
         let weatherIcon = $("<img>");
         weatherIcon.attr("src", iconURL);
         weatherIcon.attr("alt", "weather icon");
-        $("#city").html(`<h1>${lastSearched} : ${todaysDate}</h1>`);
+        $("#city").html(`<h1>${lastSearched} : ${todaysDate}</h1>`).attr("style", "color:white");
         $("#city").append(weatherIcon)
         let tempF = (loadResponse.main.temp - 273.15) * 1.80 + 32;
         $("#temp").text(`${tempF.toFixed(1)} °F`);
