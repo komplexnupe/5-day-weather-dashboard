@@ -7,7 +7,7 @@ let currentDay = $("#jumboCD");
 let todaysDate = moment().format("dddd, MMMM Do YYYY");
 let forecast5 = "";
 let cities = [];
-let day = 0
+let day;
  
 
 function keepFive() {
@@ -49,7 +49,7 @@ function displayForecast(city) {
         method: "GET"
     }).then(function (fiveDayResponse) {
         $("#forecast").empty();
-
+        day = 0
         for (let i = 0; i < fiveDayResponse.list.length; i++) {
             let curr = fiveDayResponse.list[i];
             if (curr.dt_txt.includes("12:00")) {
